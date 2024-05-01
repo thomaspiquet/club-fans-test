@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  api:
+    container_name: api
+    build:
+      context: ./api/
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=mysql-server
+      - DB_PORT=3306
+      - DB_NAME=test
+      - DB_USER=api
+      - DB_PASSWORD=456password123
+    depends_on:
+      - mysql-server
+
+  mysql-server:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: api
+      MYSQL_PASSWORD: 456password123
+      MYSQL_ROOT_PASSWORD: 456rootpassword123
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
